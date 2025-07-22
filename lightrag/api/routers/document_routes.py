@@ -740,7 +740,7 @@ async def pipeline_enqueue_file(rag: LightRAG, file_path: Path, doc_manager: Doc
         logger.error(f"Error processing or enqueueing file {file_path.relative_to(doc_manager.input_dir)}: {str(e)}")
         logger.error(traceback.format_exc())
     finally:
-        if file_path.relative_to(doc_manager.input_dir).startswith(temp_prefix):
+        if str(file_path.relative_to(doc_manager.input_dir)).startswith(temp_prefix):
             try:
                 file_path.unlink()
             except Exception as e:
