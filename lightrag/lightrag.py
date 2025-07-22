@@ -861,7 +861,7 @@ class LightRAG:
         }
 
         if not new_docs:
-            logger.info("No new unique documents were found.")
+            logger.info(f"No new unique documents were found. {file_paths}")
             return
 
         # 5. Store status document
