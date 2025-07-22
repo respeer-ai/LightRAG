@@ -1329,6 +1329,9 @@ async def merge_nodes_and_edges(
     for edge_key, edges in all_edges.items():
         tasks.append(asyncio.create_task(_locked_process_edges(edge_key, edges)))
 
+    if not tasks:
+        return
+
     # Execute all tasks in parallel with semaphore control and early failure detection
     done, pending = await asyncio.wait(tasks, return_when=asyncio.FIRST_EXCEPTION)
 
