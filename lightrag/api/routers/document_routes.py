@@ -549,7 +549,7 @@ class DocumentManager:
         return any(filename.lower().endswith(ext) for ext in self.supported_extensions)
 
 
-async def pipeline_enqueue_file(rag: LightRAG, file_path: Path) -> bool:
+async def pipeline_enqueue_file(rag: LightRAG, file_path: Path, doc_manager: DocumentManager) -> bool:
     """Add a file to the queue for processing
 
     Args:
@@ -610,19 +610,19 @@ async def pipeline_enqueue_file(rag: LightRAG, file_path: Path) -> bool:
 
                     # Validate content
                     if not content or len(content.strip()) == 0:
-                        logger.error(f"Empty content in file: {file_path.name}")
+                        logger.error(f"Empty content in file: {file_path.relative_to(doc_manager.input_dir)}")
                         return False
 
                     # Check if content looks like binary data string representation
                     if content.startswith("b'") or content.startswith('b"'):
                         logger.error(
-                            f"File {file_path.name} appears to contain binary data representation instead of text"
+                            f"File {file_path.relative_to(doc_manager.input_dir)} appears to contain binary data representation instead of text"
                         )
                         return False
 
                 except UnicodeDecodeError:
                     logger.error(
-                        f"File {file_path.name} is not valid UTF-8 encoded text. Please convert it to UTF-8 before processing."
+                        f"File {file_path.relative_to(doc_manager.input_dir)} is not valid UTF-8 encoded text. Please convert it to UTF-8 before processing."
                     )
                     return False
             case ".pdf":
@@ -718,7 +718,7 @@ async def pipeline_enqueue_file(rag: LightRAG, file_path: Path) -> bool:
                         content += "\n"
             case _:
                 logger.error(
-                    f"Unsupported file type: {file_path.name} (extension {ext})"
+                    f"Unsupported file type: {file_path.relative_to(doc_manager.input_dir)} (extension {ext})"
                 )
                 return False
 
@@ -727,20 +727,20 @@ async def pipeline_enqueue_file(rag: LightRAG, file_path: Path) -> bool:
             # Check if content contains only whitespace characters
             if not content.strip():
                 logger.warning(
-                    f"File contains only whitespace characters. file_paths={file_path.name}"
+                    f"File contains only whitespace characters. file_paths={file_path.relative_to(doc_manager.input_dir)}"
                 )
 
-            await rag.apipeline_enqueue_documents(content, file_paths=file_path.name)
-            logger.info(f"Successfully fetched and enqueued file: {file_path.name}")
+            await rag.apipeline_enqueue_documents(content, file_paths=file_path.relative_to(doc_manager.input_dir))
+            logger.info(f"Successfully fetched and enqueued file: {file_path.relative_to(doc_manager.input_dir)}")
             return True
         else:
-            logger.error(f"No content could be extracted from file: {file_path.name}")
+            logger.error(f"No content could be extracted from file: {file_path.relative_to(doc_manager.input_dir)}")
 
     except Exception as e:
-        logger.error(f"Error processing or enqueueing file {file_path.name}: {str(e)}")
+        logger.error(f"Error processing or enqueueing file {file_path.relative_to(doc_manager.input_dir)}: {str(e)}")
         logger.error(traceback.format_exc())
     finally:
-        if file_path.name.startswith(temp_prefix):
+        if file_path.relative_to(doc_manager.input_dir).startswith(temp_prefix):
             try:
                 file_path.unlink()
             except Exception as e:
@@ -748,7 +748,7 @@ async def pipeline_enqueue_file(rag: LightRAG, file_path: Path) -> bool:
     return False
 
 
-async def pipeline_index_file(rag: LightRAG, file_path: Path):
+async def pipeline_index_file(rag: LightRAG, file_path: Path, doc_manager: DocumentManager):
     """Index a file
 
     Args:
@@ -756,15 +756,15 @@ async def pipeline_index_file(rag: LightRAG, file_path: Path):
         file_path: Path to the saved file
     """
     try:
-        if await pipeline_enqueue_file(rag, file_path):
+        if await pipeline_enqueue_file(rag, file_path, doc_manager):
             await rag.apipeline_process_enqueue_documents()
 
     except Exception as e:
-        logger.error(f"Error indexing file {file_path.name}: {str(e)}")
+        logger.error(f"Error indexing file {file_path.relative_to(doc_manager.input_dir)}: {str(e)}")
         logger.error(traceback.format_exc())
 
 
-async def pipeline_index_files(rag: LightRAG, file_paths: List[Path]):
+async def pipeline_index_files(rag: LightRAG, file_paths: List[Path], doc_manager: DocumentManager):
     """Index multiple files sequentially to avoid high CPU load
 
     Args:
@@ -782,7 +782,7 @@ async def pipeline_index_files(rag: LightRAG, file_paths: List[Path]):
 
         # Process files sequentially
         for file_path in sorted_file_paths:
-            if await pipeline_enqueue_file(rag, file_path):
+            if await pipeline_enqueue_file(rag, file_path, doc_manager):
                 enqueued = True
 
         # Process the queue only if at least one file was successfully enqueued
@@ -850,7 +850,7 @@ async def run_scanning_process(rag: LightRAG, doc_manager: DocumentManager):
             return
 
         # Process all files at once
-        await pipeline_index_files(rag, new_files)
+        await pipeline_index_files(rag, new_files, doc_manager)
         logger.info(f"Scanning process completed: {total_files} files Processed.")
 
     except Exception as e:

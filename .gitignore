@@ -70,3 +70,5 @@ test_*
 
 # Cline files
 memory-bank/
+
+**/package-lock*
