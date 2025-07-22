@@ -38,6 +38,9 @@ WORKDIR /app
 COPY --from=builder /root/.local /root/.local
 COPY ./lightrag ./lightrag
 COPY setup.py .
+COPY ./entrypoint.sh /usr/local/bin/entrypoint.sh
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 RUN pip install ".[api]"
 # Make sure scripts in .local are usable
@@ -54,4 +57,4 @@ ENV INPUT_DIR=/app/data/inputs
 EXPOSE 9621
 
 # Set entrypoint
-ENTRYPOINT ["python", "-m", "lightrag.api.lightrag_server"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
