@@ -514,6 +514,7 @@ class DocumentManager:
             ".css",  # Cascading Style Sheets
             ".scss",  # Sassy CSS
             ".less",  # LESS CSS
+            ".rs",
         ),
     ):
         # Store the base input directory and workspace
@@ -603,6 +604,7 @@ async def pipeline_enqueue_file(rag: LightRAG, file_path: Path, doc_manager: Doc
                 | ".css"
                 | ".scss"
                 | ".less"
+                | ".rs"
             ):
                 try:
                     # Try to decode as UTF-8

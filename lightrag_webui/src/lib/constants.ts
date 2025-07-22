@@ -61,7 +61,8 @@ export const supportedFileTypes = {
     '.php',
     '.css',
     '.scss',
-    '.less'
+    '.less',
+    '.rs'
   ],
   'application/pdf': ['.pdf'],
   'application/msword': ['.doc'],
