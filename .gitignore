@@ -72,3 +72,4 @@ test_*
 memory-bank/
 
 **/package-lock*
+.00-configmap.yaml
