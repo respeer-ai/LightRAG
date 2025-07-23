@@ -477,6 +477,7 @@ class DocumentManager:
         input_dir: str,
         workspace: str = "",  # New parameter for workspace isolation
         supported_extensions: tuple = (
+            ".rs",
             ".txt",
             ".md",
             ".pdf",
@@ -514,7 +515,6 @@ class DocumentManager:
             ".css",  # Cascading Style Sheets
             ".scss",  # Sassy CSS
             ".less",  # LESS CSS
-            ".rs",
         ),
     ):
         # Store the base input directory and workspace
