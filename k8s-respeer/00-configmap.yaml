@@ -19,4 +19,5 @@ data:
   environment.embedding_dim: "1024"
   environment.embedding_binding_api_key: "$EMBEDDING_BINDING_API_KEY"
   environment.linera_tag: "$LINERA_TAG"
+  environment.ollama_emulating_model_tag: "$OLLAMA_EMULATING_MODEL_TAG"
   environment.auth_accounts: "$AUTH_ACCOUNTS"

@@ -93,6 +93,11 @@ spec:
             configMapKeyRef:
               name: lightrag-respeer-environment
               key: environment.linera_tag
+        - name: OLLAMA_EMULATING_MODEL_TAG
+          valueFrom:
+            configMapKeyRef:
+              name: lightrag-respeer-environment
+              key: environment.ollama_emulating_model_tag
         - name: AUTH_ACCOUNTS
           valueFrom:
             configMapKeyRef:
