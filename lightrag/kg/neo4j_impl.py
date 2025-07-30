@@ -428,7 +428,7 @@ class Neo4JStorage(BaseGraphStorage):
             query = f"""
                 UNWIND $node_ids AS id
                 MATCH (n:`{workspace_label}` {{entity_id: id}})
-                RETURN n.entity_id AS entity_id, count {{ (n)--() }} AS degree;
+                RETURN n.entity_id AS entity_id, count ( (n)--() ) AS degree;
             """
             result = await session.run(query, node_ids=node_ids)
             degrees = {}
