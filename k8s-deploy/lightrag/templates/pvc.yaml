@@ -4,6 +4,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "lightrag.fullname" . }}-rag-storage
+  annotations:
+    "helm.sh/resource-policy": keep
   labels:
     {{- include "lightrag.labels" . | nindent 4 }}
 spec:
@@ -17,6 +19,8 @@ apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: {{ include "lightrag.fullname" . }}-inputs
+  annotations:
+    "helm.sh/resource-policy": keep
   labels:
     {{- include "lightrag.labels" . | nindent 4 }}
 spec:
