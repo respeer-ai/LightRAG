@@ -1,8 +1,8 @@
 replicaCount: 1
 
 image:
-  repository: uhub.service.ucloud.cn/entropypool/lightrag-respeer:respeer-v1.4.3
-  tag: latest
+  repository: uhub.service.ucloud.cn/entropypool/lightrag-respeer
+  tag: respeer-v1.4.3
 
 service:
   type: ClusterIP
@@ -25,6 +25,9 @@ persistence:
     size: 5Gi
 
 env:
+  TAG:
+  ASYNC_GRAPHQL_COMMIT:
+  LINERA_DOCUMENTATION_COMMIT:
   HOST: 0.0.0.0
   PORT: 9621
   AUTH_ACCOUNTS: 

@@ -37,6 +37,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y \
     wget \
     unzip \
+    git \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy only necessary files from builder
