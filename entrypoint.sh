@@ -1,20 +1,34 @@
 #!/bin/sh
 
+. /app/.env
 TAG=${TAG:-v0.14.1}
-
 mkdir -p /app/data/inputs
-wget https://github.com/linera-io/linera-protocol/archive/refs/tags/${TAG}.zip
-unzip ${TAG}.zip -d /app/data/inputs
-rm /app/data/inputs/linera-protocol-${TAG}/.github -rf
 
-cd /app/data/inputs
+if [ ! -d /app/data/inputs/linera-protocol-${TAG} ]; then
+git clone https://github.com/linera-io/linera-protocol.git
+cd linera-protocol
+git checkout ${TAG}
+rm .github -rf
+cd -
+mv linera-protocol /app/data/inputs/linera-protocol-${TAG}
+fi
+
+if [ ! -d /app/data/inputs/async-graphql-${ASYNC_GRAPHQL_COMMIT} ]; then
 git clone https://github.com/async-graphql/async-graphql.git
 cd async-graphql
 git checkout ${ASYNC_GRAPHQL_COMMIT}
+rm .github -rf
+cd -
+mv async-graphql /app/data/inputs/async-graphql_${ASYNC_GRAPHQL_COMMIT}
+fi
 
-cd /app/data/inputs
+if [ ! -d /app/data/inputs/linera-documentation-${LINERA_DOCUMENTATION_COMMIT} ]; then
 git clone https://github.com/linera-io/linera-documentation.git
 cd linera-documentation
 git checkout ${LINERA_DOCUMENTATION_COMMIT}
+rm .github -rf
+cd -
+mv linera-documentation /app/data/inputs/linera-documentation-${LINERA_DOCUMENTATION_COMMIT}
+fi
 
 python -m lightrag.api.lightrag_server --auto-scan-at-startup
