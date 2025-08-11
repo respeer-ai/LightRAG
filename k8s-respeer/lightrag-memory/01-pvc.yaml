@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: lightrag-pvc
+  name: lightrag-linera-respeer-master-pvc
   namespace: kube-system
 spec:
   accessModes:

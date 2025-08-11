@@ -1,11 +1,11 @@
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
-  name: linera-rag-dashboard-ingress
+  name: lightrag-linera-respeer-master-ingress
   namespace: kube-system
   annotations:
-    k8s.kuboard.cn/displayName: lightrag-service
-    k8s.kuboard.cn/workload: lightrag-service
+    k8s.kuboard.cn/displayName: lightrag-linera-respeer-master-service
+    k8s.kuboard.cn/workload: lightrag-linera-respeer-master-service
     kubernetes.io/ingress.class: "traefik-internet"
     traefik.ingress.kubernetes.io/router.entrypoints: websecure, web
     traefik.ingress.kubernetes.io/router.middlewares:
@@ -20,10 +20,10 @@ spec:
         - linera-rag.respeer.ai
       secretName: linera-rag-respeer-ai-tls
   rules:
-    - host: dashboard.linera-rag.respeer.ai
+    - host: lightrag-linera-respeer-master.linera-rag.respeer.ai
       http:
         paths:
           - path: /
             backend:
-              serviceName: lightrag-service
+              serviceName: lightrag-linera-respeer-master-service
               servicePort: 9621

@@ -1,112 +1,112 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: lightrag-service
+  name: lightrag-linera-respeer-master-service
   namespace: kube-system
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: lightrag-service
+      app: lightrag-linera-respeer-master-service
   template:
     metadata:
       labels:
-        app: lightrag-service
+        app: lightrag-linera-respeer-master-service
     spec:
       containers:
-      - name: lightrag-service
+      - name: lightrag-linera-respeer-master-service
         image: uhub.service.ucloud.cn/entropypool/lightrag-respeer:respeer-v1.4.3
         imagePullPolicy: Always
         env:
         - name: ENABLE_LLM_CACHE
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.enable_llm_cache
         - name: ENABLE_RERANK
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.enable_remark
         - name: ENABLE_LLM_CACHE_FOR_EXTRACT
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.enable_llm_cache_for_extract
         - name: MAX_TOKENS
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.max_tokens
         - name: MAX_PARALLEL_INSERT
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.max_parallel_insert  
         - name: MAX_ASYNC
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.max_async
         - name: LLM_BINDING
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.llm_binding
         - name: LLM_MODEL
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.llm_model
         - name: LLM_BINDING_HOST
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.llm_binding_host
         - name: LLM_BINDING_API_KEY
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.llm_binding_api_key
         - name: EMBEDDING_BINDING
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.embedding_binding
         - name: EMBEDDING_MODEL
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.embedding_model
         - name: EMBEDDING_DIM
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.embedding_dim
         - name: EMBEDDING_BINDING_API_KEY
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.embedding_binding_api_key
         - name: TAG
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.linera_tag
         - name: OLLAMA_EMULATING_MODEL_TAG
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.ollama_emulating_model_tag
         - name: AUTH_ACCOUNTS
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.auth_accounts
         - name: LOG_LEVEL
           valueFrom:
             configMapKeyRef:
-              name: lightrag-respeer-environment
+              name: lightrag-linera-respeer-master-environment
               key: environment.log_level
         command: ["/usr/local/bin/entrypoint.sh"]
         volumeMounts:
@@ -115,18 +115,18 @@ spec:
       volumes:
       - name: work
         persistentVolumeClaim:
-          claimName: lightrag-pvc
+          claimName: lightrag-linera-respeer-master-pvc
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: lightrag-service
+  name: lightrag-linera-respeer-master-service
   namespace: kube-system
 spec:
   ports:
-    - name: lightrag-service
+    - name: lightrag-linera-respeer-master-service
       port: 9621
       targetPort: 9621
   selector:
-    app: lightrag-service
+    app: lightrag-linera-respeer-master-service

@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: lightrag-respeer-environment
+  name: lightrag-linera-respeer-master-environment
   namespace: kube-system
 data:
   environment.enable_llm_cache: "true"
