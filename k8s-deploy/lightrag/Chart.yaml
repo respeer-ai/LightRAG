@@ -1,5 +1,5 @@
 apiVersion: v2
-name: lightrag
+name: lightrag-db-linera-respeer-master
 description: A Helm chart for LightRAG, an efficient and lightweight RAG system
 type: application
 version: 0.1.0
