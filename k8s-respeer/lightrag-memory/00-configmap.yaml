@@ -21,3 +21,4 @@ data:
   environment.linera_tag: "$LINERA_TAG"
   environment.ollama_emulating_model_tag: "$OLLAMA_EMULATING_MODEL_TAG"
   environment.auth_accounts: "$AUTH_ACCOUNTS"
+  environment.log_level: "DEBUG"

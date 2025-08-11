@@ -17,6 +17,9 @@ spec:
       containers:
       - name: postgres
         image: uhub.service.ucloud.cn/entropypool/postgres:16.4
+        args:
+          - '-c'
+          - config_file=/var/lib/postgresql/data/postgresql.conf
         imagePullPolicy: IfNotPresent
         ports:
         - containerPort: 5432

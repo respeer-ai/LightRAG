@@ -103,6 +103,11 @@ spec:
             configMapKeyRef:
               name: lightrag-respeer-environment
               key: environment.auth_accounts
+        - name: LOG_LEVEL
+          valueFrom:
+            configMapKeyRef:
+              name: lightrag-respeer-environment
+              key: environment.log_level
         command: ["/usr/local/bin/entrypoint.sh"]
         volumeMounts:
         - name: work
