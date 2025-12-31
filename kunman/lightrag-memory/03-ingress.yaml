@@ -1,4 +1,4 @@
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: lightrag-${LINERA_TAG}-ingress
@@ -24,6 +24,9 @@ spec:
       http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: lightrag-${LINERA_TAG}-service
-              servicePort: 9621
+              service:
+                name: lightrag-${LINERA_TAG}-service
+                port:
+                  number: 9621
