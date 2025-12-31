@@ -1,0 +1,23 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: lightrag-environment
+  namespace: kube-system
+data:
+  environment.enable_llm_cache: "true"
+  environment.enable_remark: "False"
+  environment.enable_llm_cache_for_extract: "true"
+  environment.max_tokens: "32000"
+  environment.max_parallel_insert: "2"
+  environment.max_async: "4"
+  environment.llm_binding: "openai"
+  environment.llm_model: "qwen-plus"
+  environment.llm_binding_host: "$LLM_BINDING_HOST"
+  environment.llm_binding_api_key: "$LLM_BINDING_API_KEY"
+  environment.embedding_binding: "openai"
+  environment.embedding_model: "text-embedding-v4"
+  environment.embedding_dim: "1024"
+  environment.embedding_binding_api_key: "$EMBEDDING_BINDING_API_KEY"
+  environment.ollama_emulating_model_tag: "$OLLAMA_EMULATING_MODEL_TAG"
+  environment.auth_accounts: "$AUTH_ACCOUNTS"
+  environment.log_level: "DEBUG"

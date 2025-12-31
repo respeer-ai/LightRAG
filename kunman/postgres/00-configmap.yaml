@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-config
+  namespace: kube-system
+data:
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "$POSTGRES_PASSWORD"
+  POSTGRES_WORKSPACE: default
+  PGDATA: /var/lib/postgresql/data/pgdata
+  postgresql.conf: |
+    shared_preload_libraries = 'vector'
+    logging_collector = on
+    log_filename = 'postgresql-%Y-%m-%d_%H%M.log'
+    log_statement = all
+    log_min_duration_statement = 0
+    listen_addresses = '*'
+    max_connections = 100
+    dynamic_shared_memory_type = posix
+    max_wal_size = 1GB
+    min_wal_size = 80MB
+    log_timezone = 'Etc/UTC'
+    datestyle = 'iso, mdy'
+    timezone = 'Etc/UTC'
+    lc_messages = 'en_US.utf8'
+    lc_monetary = 'en_US.utf8'
+    lc_numeric = 'en_US.utf8'
+    lc_time = 'en_US.utf8'
+    default_text_search_config = 'pg_catalog.english'

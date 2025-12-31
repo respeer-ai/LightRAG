@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: neo4j
+  namespace: kube-system
+spec:
+  serviceName: "neo4j-service"
+  replicas: 1
+  selector:
+    matchLabels:
+      app: neo4j
+  template:
+    metadata:
+      labels:
+        app: neo4j
+    spec:
+      containers:
+      - name: neo4j
+        image: neo4j:4.4  # 适合k8s 1.21的稳定版本
+        ports:
+        - containerPort: 7687  # Bolt协议端口
+        - containerPort: 7474  # HTTP端口
+        env:
+        - name: NEO4J_AUTH
+          valueFrom:
+            configMapKeyRef:
+              name: neo4j-environment
+              key: environment.neo4j_auth
+        - name: NEO4J_dbms_connector_bolt_advertised__address
+          value: "neo4j-0.neo4j-service.neo4j.svc.cluster.local:7687"
+        - name: NEO4J_dbms_connector_http_advertised__address
+          value: "neo4j-0.neo4j-service.neo4j.svc.cluster.local:7474"
+        volumeMounts:
+        - name: neo4j-storage
+          mountPath: /data
+      volumes:
+      - name: neo4j-storage
+        persistentVolumeClaim:
+          claimName: neo4j-pvc

@@ -1,16 +1,16 @@
 #!/bin/sh
 
 [ -f /app/.env ] && . /app/.env
-TAG=${TAG:-v0.14.1}
+LINERA_TAG=${LINERA_TAG:-master}
 mkdir -p /app/data/inputs
 
-if [ ! -d /app/data/inputs/linera-protocol-${TAG} ]; then
+if [ ! -d /app/data/inputs/linera-protocol-${LINERA_TAG} ]; then
 git clone https://github.com/linera-io/linera-protocol.git
 cd linera-protocol
-git checkout ${TAG}
+git checkout ${LINERA_TAG}
 rm .github -rf
 cd -
-mv linera-protocol /app/data/inputs/linera-protocol-${TAG}
+mv linera-protocol /app/data/inputs/linera-protocol-${LINERA_TAG}
 fi
 
 if [ ! -d /app/data/inputs/async-graphql-${ASYNC_GRAPHQL_COMMIT} ]; then

@@ -1,0 +1,29 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: lightrag-${LINERA_TAG}-ingress
+  namespace: kube-system
+  annotations:
+    k8s.kuboard.cn/displayName: lightrag-${LINERA_TAG}-service
+    k8s.kuboard.cn/workload: lightrag-${LINERA_TAG}-service
+    kubernetes.io/ingress.class: "traefik-internet"
+    traefik.ingress.kubernetes.io/router.entrypoints: websecure, web
+    traefik.ingress.kubernetes.io/router.middlewares:
+      kube-system-http-redirect-https@kubernetescrd,
+      kube-system-http-redirect-https-testing@kubernetescrd,
+      kube-system-common-headers@kubernetescrd
+
+spec:
+  tls:
+    - hosts:
+        - '*.linera-rag.respeer.ai'
+        - linera-rag.respeer.ai
+      secretName: linera-rag-respeer-ai-tls
+  rules:
+    - host: lightrag-${LINERA_TAG}.linera-rag.respeer.ai
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: lightrag-${LINERA_TAG}-service
+              servicePort: 9621
